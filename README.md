@@ -1,4 +1,4 @@
-##Simulation of three body problem
+## Simulation of three body problem
 
 As title says, this is a try to create an simulation of three body problem in Golang. Choosing of go here is trival, because the reason is a learning experience.
 To make it available via website, as a middle-man WebAssembly is used.
