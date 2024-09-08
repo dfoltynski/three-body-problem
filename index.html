@@ -1,0 +1,36 @@
+<head>
+  <title> Three body problem </title>
+  <meta name="description" content="Three body problem implementation in go, available in browser by webassembly"
+</head>
+<body>
+  <script src="wasm_exec.js"></script>
+  <script>
+    if(!WebAssembly.instantiateStreaming) {
+      WebAssembly.instantiateStreaming = async (resp, importObj) => {
+        const source = await (await resp).arrayBuffer();
+        return await WebAssembly.instantiate(source, importObj);
+      }
+    }
+
+    const go = new Go();
+
+    let mod;
+    let inst;
+
+    WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then(async (result) => {
+      mod = result.module;
+      inst = result.instance;
+      await run();
+    }).catch((err) => {
+        console.log(err);
+      });
+
+    async function run() {
+      await go.run(inst);
+
+      inst = await WebAssembly.instantiate(mod, go.importObject);
+    }
+  </script>
+
+  <div id="giowindow"></div>
+</body>
